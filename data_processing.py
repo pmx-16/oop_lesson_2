@@ -102,3 +102,17 @@ avg_game1 = sum(game1)/len(game1)
 avg_game2 = sum(game2)/len(game2)
 print(avg_game1)
 print(avg_game2)
+
+passes_comparison = []
+passes_comparison2 = []
+my_table3_filtered = my_table1.filter(lambda x: x["position"] == "midfielder")
+my_table3_filtered2 = my_table1.filter(lambda x: x["position"] == "forward")
+for item3 in my_table3_filtered.table:
+    passes_comparison.append(float(item3["passes"]))
+
+for item4 in my_table3_filtered2.table:
+    passes_comparison2.append(float(item4["passes"]))
+avg_pass1 = sum(passes_comparison)/len(passes_comparison)
+avg_pass2 = sum(passes_comparison2)/len(passes_comparison2)
+print(avg_pass1)
+print(avg_pass2)
