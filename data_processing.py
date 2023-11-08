@@ -3,17 +3,17 @@ import csv, os
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-cities = []
-with open(os.path.join(__location__, 'Cities.csv')) as f:
+players = []
+with open(os.path.join(__location__, 'Players.csv')) as f:
     rows = csv.DictReader(f)
     for r in rows:
-        cities.append(dict(r))
+        players.append(dict(r))
 
-countries = []
-with open(os.path.join(__location__, 'Countries.csv')) as f:
+teams = []
+with open(os.path.join(__location__, 'Teams.csv')) as f:
     rows = csv.DictReader(f)
     for r in rows:
-        countries.append(dict(r))
+        teams.append(dict(r))
 
 class DB:
     def __init__(self):
@@ -71,23 +71,25 @@ class Table:
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
-table1 = Table('cities', cities)
-table2 = Table('countries', countries)
+table1 = Table('players', players)
+table2 = Table('teams', teams)
 my_DB = DB()
 my_DB.insert(table1)
 my_DB.insert(table2)
-my_table1 = my_DB.search('cities')
+my_table1 = my_DB.search('players')
+my_table2 = my_DB.search('teams')
 
-print("Test filter: only filtering out cities in Italy") 
-my_table1_filtered = my_table1.filter(lambda x: x['country'] == 'Italy')
-print(my_table1_filtered)
-print()
-
-print("Test select: only displaying two fields, city and latitude, for cities in Italy")
-my_table1_selected = my_table1_filtered.select(['city', 'latitude'])
+print("Test filter: only filtering out players with less than 200 minutes and more than 100 passes") 
+my_table1_filtered = my_table1.filter(lambda x: float(x['minutes']) < 200).filter(lambda x: float(x['passes']) > 100).filter(lambda player: "ia" in player["team"])
+#print(my_table1_filtered)
+#print()
+print("Test select: only displaying surname, t, for cities in Italy")
+my_table1_selected = my_table1_filtered.select(['surname', 'team', 'position'])
 print(my_table1_selected)
-print()
 
+
+
+"""""
 print("Calculting the average temperature without using aggregate for cities in Italy")
 temps = []
 for item in my_table1_filtered.table:
@@ -121,3 +123,4 @@ for item in my_table2.table:
     if len(my_table1_filtered.table) >= 1:
         print(item['country'], my_table1_filtered.aggregate(lambda x: min(x), 'latitude'), my_table1_filtered.aggregate(lambda x: max(x), 'latitude'))
 print()
+"""
