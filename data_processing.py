@@ -85,6 +85,7 @@ my_table1_filtered = my_table1.filter(lambda x: float(x['minutes']) < 200).filte
 #print()
 print("Test select: only displaying surname, team, position")
 my_table1_selected = my_table1_filtered.select(['surname', 'team', 'position'])
+print("Player who is on a team with \"ia\" in a team with more than 100 passes and less than 200 minutes: ")
 print(my_table1_selected)
 
 game1 = []
@@ -96,12 +97,11 @@ game2 = []
 my_table2_filtered2 = my_table2.filter(lambda x: float(x["ranking"]) >= 10)
 for item2 in my_table2_filtered2.table:
     game2.append(float(item2['games']))
-print(game1)
-print(game2)
 avg_game1 = sum(game1)/len(game1)
 avg_game2 = sum(game2)/len(game2)
-print(avg_game1)
-print(avg_game2)
+print(" ")
+print(f"average number of games played for teams ranking below 10: {avg_game1}")
+print(f"average number of games played for teams ranking above or equal 10 {avg_game2}")
 
 passes_comparison = []
 passes_comparison2 = []
@@ -114,5 +114,7 @@ for item4 in my_table3_filtered2.table:
     passes_comparison2.append(float(item4["passes"]))
 avg_pass1 = sum(passes_comparison)/len(passes_comparison)
 avg_pass2 = sum(passes_comparison2)/len(passes_comparison2)
-print(avg_pass1)
-print(avg_pass2)
+print(" ")
+print(f"average number of passes made by midfielders {avg_pass1}")
+print(f"average number of passes made by forwards {avg_pass2}")
+
