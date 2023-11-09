@@ -3,17 +3,12 @@ import csv, os
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-players = []
-with open(os.path.join(__location__, 'Players.csv')) as f:
+titanics = []
+with open(os.path.join(__location__, 'Titanic.csv')) as f:
     rows = csv.DictReader(f)
     for r in rows:
-        players.append(dict(r))
+        titanics.append(dict(r))
 
-teams = []
-with open(os.path.join(__location__, 'Teams.csv')) as f:
-    rows = csv.DictReader(f)
-    for r in rows:
-        teams.append(dict(r))
 
 class DB:
     def __init__(self):
@@ -71,50 +66,27 @@ class Table:
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
-table1 = Table('players', players)
-table2 = Table('teams', teams)
+table1 = Table('titanics', titanics)
 my_DB = DB()
 my_DB.insert(table1)
-my_DB.insert(table2)
-my_table1 = my_DB.search('players')
-my_table2 = my_DB.search('teams')
+my_table1 = my_DB.search('titanics')
 
-print("Test filter: only filtering out players with less than 200 minutes and more than 100 passes") 
-my_table1_filtered = my_table1.filter(lambda x: float(x['minutes']) < 200).filter(lambda x: float(x['passes']) > 100).filter(lambda player: "ia" in player["team"])
-#print(my_table1_filtered)
-#print()
-print("Test select: only displaying surname, team, position")
-my_table1_selected = my_table1_filtered.select(['surname', 'team', 'position'])
-print("Player who is on a team with \"ia\" in a team with more than 100 passes and less than 200 minutes: ")
-print(my_table1_selected)
+first_fare = []
+my_table1_filtered = my_table1.filter(lambda x: float(x['class']) == 1)
+for item1 in my_table1_filtered.table:
+    first_fare.append(float(item1['fare']))
 
-game1 = []
-my_table2_filtered = my_table2.filter(lambda x: float(x["ranking"]) < 10)
-for item in my_table2_filtered.table:
-    game1.append(float(item['games']))
+third_fare = []
+my_table2_filtered = my_table1.filter(lambda x: float(x['class']) == 3)
+for item2 in my_table2_filtered.table:
+    third_fare.append(float(item2['fare']))
 
-game2 = []
-my_table2_filtered2 = my_table2.filter(lambda x: float(x["ranking"]) >= 10)
-for item2 in my_table2_filtered2.table:
-    game2.append(float(item2['games']))
-avg_game1 = sum(game1)/len(game1)
-avg_game2 = sum(game2)/len(game2)
-print(" ")
-print(f"average number of games played for teams ranking below 10: {avg_game1}")
-print(f"average number of games played for teams ranking above or equal 10 {avg_game2}")
+first_avg = sum(first_fare)/len(first_fare)
+third_avg = sum(third_fare)/len(third_fare)
 
-passes_comparison = []
-passes_comparison2 = []
-my_table3_filtered = my_table1.filter(lambda x: x["position"] == "midfielder")
-my_table3_filtered2 = my_table1.filter(lambda x: x["position"] == "forward")
-for item3 in my_table3_filtered.table:
-    passes_comparison.append(float(item3["passes"]))
+print(f"average fare paid by first class customers: {first_avg}")
+print(f"average fare paid by third class customers: {third_avg}")
 
-for item4 in my_table3_filtered2.table:
-    passes_comparison2.append(float(item4["passes"]))
-avg_pass1 = sum(passes_comparison)/len(passes_comparison)
-avg_pass2 = sum(passes_comparison2)/len(passes_comparison2)
-print(" ")
-print(f"average number of passes made by midfielders {avg_pass1}")
-print(f"average number of passes made by forwards {avg_pass2}")
+
+
 
