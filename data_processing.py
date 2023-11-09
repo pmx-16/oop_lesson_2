@@ -87,6 +87,31 @@ third_avg = sum(third_fare)/len(third_fare)
 print(f"average fare paid by first class customers: {first_avg}")
 print(f"average fare paid by third class customers: {third_avg}")
 
+male = []
+my_table3_filtered = my_table1.filter(lambda x: x['gender'] == 'M')
+for male1 in my_table3_filtered.table:
+    male.append(str(male1['first']))
+
+rate_M = []
+my_table4_filtered = my_table1.filter(lambda x: x['gender'] == 'M').filter(lambda x: x['survived'] == 'yes')
+for rate1 in my_table4_filtered.table:
+    rate_M.append(str(rate1['first']))
+
+female = []
+my_table5_filtered = my_table1.filter(lambda x: x['gender'] == 'F')
+for female1 in my_table5_filtered.table:
+    female.append(str(female1['first']))
+
+rate_F = []
+my_table6_filtered = my_table1.filter(lambda x: x['gender'] == 'F').filter(lambda x: x['survived'] == 'yes')
+for rate2 in my_table6_filtered.table:
+    rate_F.append(str(rate2['first']))
+
+surv_rate_M = (len(rate_M)/len(male)) * 100
+surv_rate_F = (len(rate_F))/len(female) *100
+print(f"survival rate of male passengers: {surv_rate_M}")
+print(f"survival rate of female passengers: {surv_rate_F}")
+
 
 
 
